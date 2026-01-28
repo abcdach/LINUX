@@ -14,7 +14,7 @@ document.getElementById("mm-data").textContent = `
 ****   UBUNTU - ინსტალაცია [006](DOC/006_UBUNTU_ინსტალაცია.pdf)
 
 ** სისტემა
-***  აქრიტეკტურა
+***  არქიტეკტურა
 ****    INFO
 *****		1 (INFO/010_1_INFO.png)
 *****		2 (INFO/010_2_INFO.png)
