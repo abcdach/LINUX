@@ -36,4 +36,5 @@ document.getElementById("mm-data").textContent = `
 *** I/O
 **** გადამისამართება [033](DOC/033_IO_გადამისამართება.pdf)
 
+
 `;
