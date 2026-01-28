@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Map - დინების I/O და ნაივითრობა</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #1a1f3a;
+            --color-center: #b8a4e8;
+            --color-level1: #89b4f0;
+            --color-level2: #7dd3c0;
+            --color-level3: #7ed99f;
+            --text-primary: #1a1a1a;
+            --text-secondary: #a1a1aa;
+            --glow: rgba(184, 164, 232, 0.3);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #ffffff;
+            color: var(--text-primary);
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            display: none;
+        }
+
+        #mindmap-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        #mindmap-container.grabbing {
+            cursor: grabbing;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #nodes-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .node {
+            position: absolute;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+            user-select: none;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.6s ease-out backwards;
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: ellipsis;
+            font-size: 14px;
+            line-height: 1.2;
+            min-width: 150px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+        }
+        
+        .link-icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            background: black;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>') no-repeat center;
+            mask-size: contain;
+            opacity: 1;
+            flex-shrink: 0;
+        }
+        
+        .link-icon.file-icon {
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>') no-repeat center;
+            mask-size: contain;
+        }
+        
+        .node-circle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #89b4f0;
+            z-index: 1000;
+            left: calc(100% + 5px);
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: auto;
+            transition: transform 0.2s ease;
+            display: none; /* Hidden by default */
+        }
+        
+        .node-circle.has-children {
+            display: block; /* Show only if has children */
+            background: red;
+        }
+        
+        .node.animating {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .node:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .node.center {
+            background: var(--color-center);
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 8px;
+            animation-delay: 0s;
+            min-width: 180px;
+        }
+
+        .node.level-1 {
+            background: var(--color-level1);
+            border: none;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .node.level-2 {
+            background: var(--color-level2);
+            border: none;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .node.level-3 {
+            background: var(--color-level3);
+            border: none;
+            color: var(--text-primary);
+            font-size: 12px;
+        }
+
+        .node.level-4 {
+            background: #a8e6cf;
+            border: none;
+            color: var(--text-primary);
+            font-size: 11px;
+        }
+
+        .node.expanded {
+            /* No shadow */
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 2px solid var(--color-level1);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            color: var(--text-secondary);
+            z-index: 100;
+        }
+
+        .connection-line {
+            stroke-width: 2;
+            stroke: var(--color-level1);
+            fill: none;
+            opacity: 0.4;
+            transition: all 0.5s ease;
+        }
+
+        .connection-line.highlighted {
+            stroke-width: 3;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 5px currentColor);
+        }
+    </style>
+</head>
+<body>
+	<script id="mm-data" type="text/plain"></script>
+	<script src="structure.js"></script>
+
+    <div id="mindmap-container">
+        <canvas id="canvas"></canvas>
+        <div id="nodes-container"></div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="resetView()">Reset View</button>
+        <button class="btn" onclick="expandAll()">Expand All</button>
+        <button class="btn" onclick="collapseAll()">Collapse All</button>
+    </div>
+
+    <div class="info">
+        🖱️ Drag to pan • 🖱️ Click nodes to expand/collapse • 🔍 Scroll to zoom
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('mindmap-container');
+        const nodesContainer = document.getElementById('nodes-container');
+
+        let scale = 1;
+        let offsetX = 0;
+        let offsetY = 0;
+        let isDragging = false;
+        let startX, startY;
+
+        // Parse mind map data
+        function parseData() {
+            const dataScript = document.getElementById('mm-data');
+            const text = dataScript.textContent.trim();
+            const lines = text.split('\n');
+            
+            const root = { text: '', children: [], level: 0, expanded: true };
+            const stack = [root];
+
+            lines.forEach(line => {
+                const match = line.match(/^(\*+)\s*(.+)$/);
+                if (!match) return;
+
+                const level = match[1].length;
+                let fullText = match[2].trim();
+                
+                // Extract link from parentheses
+                let link = null;
+                const linkMatch = fullText.match(/^(.+?)\s*\((.+?)\)\s*$/);
+                if (linkMatch) {
+                    fullText = linkMatch[1].trim(); // Text without link
+                    link = linkMatch[2].trim(); // Link inside parentheses
+                }
+                
+                const node = { 
+                    text: fullText, 
+                    link: link,
+                    children: [], 
+                    level, 
+                    expanded: false, 
+                    id: 'node_' + Math.random().toString(36).substr(2, 9) // Unique ID
+                };
+
+                while (stack.length > level) stack.pop();
+                stack[stack.length - 1].children.push(node);
+                stack.push(node);
+            });
+
+            return root.children[0];
+        }
+
+        const data = parseData();
+        const nodes = [];
+
+        // Calculate total height needed for a node and its children
+        function calculateSubtreeHeight(node) {
+            // If node is collapsed or has no children, it only needs 1 unit of space
+            if (!node.children || node.children.length === 0 || !node.expanded) {
+                return 1;
+            }
+            
+            // If expanded, sum up the heights of all children
+            let totalHeight = 0;
+            node.children.forEach(child => {
+                totalHeight += calculateSubtreeHeight(child);
+            });
+            return totalHeight;
+        }
+
+        // Position calculations - left to right layout with smart spacing
+        function calculatePositions(node, x = 0, y = 0, level = 0) {
+            node.x = x;
+            node.y = y;
+            node.level = level;
+            nodes.push(node);
+
+            if (!node.children || !node.expanded) return;
+
+            const horizontalSpacing = 250; // Reduced to match image
+            const verticalUnit = 50; // Increased spacing to prevent overlap at level 4
+            
+            // Calculate heights ONLY for expanded children
+            const childHeights = [];
+            let totalHeight = 0;
+            
+            node.children.forEach(child => {
+                const height = calculateSubtreeHeight(child);
+                childHeights.push(height);
+                totalHeight += height;
+            });
+            
+            const totalVerticalSpace = totalHeight * verticalUnit;
+            let currentY = y - totalVerticalSpace / 2;
+            
+            node.children.forEach((child, i) => {
+                const childHeight = childHeights[i] * verticalUnit;
+                const childY = currentY + childHeight / 2;
+                const childX = x + horizontalSpacing;
+                
+                calculatePositions(child, childX, childY, level + 1);
+                currentY += childHeight;
+            });
+        }
+
+        // Draw canvas connections
+        function drawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Find all node elements once
+            const nodeElements = Array.from(document.querySelectorAll('.node'));
+
+            nodes.forEach(node => {
+                if (node.children && node.expanded) {
+                    node.children.forEach(child => {
+                        ctx.beginPath();
+                        
+                        // Find the actual circle element for start position using ID
+                        const nodeEl = nodeElements.find(el => el.dataset.nodeId === node.id);
+                        
+                        let circleOffsetX = 110; // default
+                        if (nodeEl) {
+                            const circleEl = nodeEl.querySelector('.node-circle');
+                            if (circleEl) {
+                                const rect = circleEl.getBoundingClientRect();
+                                const nodeRect = nodeEl.getBoundingClientRect();
+                                circleOffsetX = (rect.left + rect.width/2 - (nodeRect.left + nodeRect.width/2)) / scale;
+                            }
+                        }
+                        
+                        // Find child element to get its actual position using ID
+                        const childEl = nodeElements.find(el => el.dataset.nodeId === child.id);
+                        
+                        let childLeftEdgeOffset = -75;
+                        if (childEl) {
+                            const childRect = childEl.getBoundingClientRect();
+                            const childCenterX = childRect.left + childRect.width / 2;
+                            const childLeftEdgeX = childRect.left;
+                            childLeftEdgeOffset = (childLeftEdgeX - childCenterX) / scale;
+                        }
+                        
+                        const startX = centerX + (node.x + offsetX) * scale + circleOffsetX * scale;
+                        const startY = centerY + (node.y + offsetY) * scale;
+                        
+                        const endX = centerX + (child.x + offsetX) * scale + childLeftEdgeOffset * scale;
+                        const endY = centerY + (child.y + offsetY) * scale;
+                        
+                        // Draw curved line using bezierCurveTo
+                        ctx.moveTo(startX, startY);
+                        
+                        // Control points for horizontal S-curve
+                        const controlPoint1X = startX + (endX - startX) * 0.5;
+                        const controlPoint1Y = startY;
+                        const controlPoint2X = startX + (endX - startX) * 0.5;
+                        const controlPoint2Y = endY;
+                        
+                        ctx.bezierCurveTo(controlPoint1X, controlPoint1Y, controlPoint2X, controlPoint2Y, endX, endY);
+                        
+                        const color = child.level === 1 ? '#89b4f0' : 
+                                     child.level === 2 ? '#7dd3c0' : 
+                                     child.level === 3 ? '#7ed99f' : '#a8e6cf';
+                        ctx.strokeStyle = color;
+                        ctx.lineWidth = 2;
+                        ctx.globalAlpha = 0.4;
+                        ctx.stroke();
+                    });
+                }
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        // Render nodes
+        function render() {
+            const oldNodes = [...nodes];
+            nodes.length = 0;
+            calculatePositions(data, 0, 0);
+
+            // Resize canvas
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // Draw canvas immediately
+            drawCanvas();
+
+            // Draw canvas with animation for smooth transitions
+            let frame = 0;
+            const animateLoop = () => {
+                drawCanvas();
+                frame++;
+                if (frame < 30) {
+                    requestAnimationFrame(animateLoop);
+                }
+            };
+            animateLoop();
+
+            // Update existing nodes or create new ones
+            const existingNodes = new Map();
+            Array.from(nodesContainer.children).forEach(el => {
+                if (el.dataset.nodeId) {
+                    existingNodes.set(el.dataset.nodeId, el);
+                }
+            });
+
+            // Remove nodes that no longer exist
+            const currentIds = new Set(nodes.map(n => n.id));
+            Array.from(nodesContainer.children).forEach(el => {
+                const id = el.dataset.nodeId;
+                if (id && !currentIds.has(id)) {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translate(-50%, -50%) scale(0)';
+                    setTimeout(() => el.remove(), 500);
+                }
+            });
+
+            // Update or create nodes
+            nodes.forEach((node, index) => {
+                let nodeEl = existingNodes.get(node.id);
+                const isNew = !nodeEl;
+                
+                if (!nodeEl) {
+                    nodeEl = document.createElement('div');
+                    nodeEl.className = `node ${node.level === 0 ? 'center' : 'level-' + node.level}`;
+                    nodeEl.style.opacity = '0';
+                    nodeEl.dataset.nodeId = node.id; // Store unique ID
+                    
+                    // Create text content
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = node.text;
+                    nodeEl.appendChild(textSpan);
+                    
+                    // Add link icon if node has a link
+                    if (node.link) {
+                        const linkIcon = document.createElement('span');
+                        linkIcon.className = 'link-icon';
+                        
+                        // Check if it's a file (not starting with http/https/www)
+                        const isFile = !node.link.startsWith('http://') && 
+                                      !node.link.startsWith('https://') && 
+                                      !node.link.startsWith('www.');
+                        
+                        if (isFile) {
+                            linkIcon.classList.add('file-icon');
+                        }
+                        
+                        linkIcon.title = node.link; // Tooltip with link
+                        nodeEl.appendChild(linkIcon);
+                    }
+                    
+                    // Create circle element
+                    const circleEl = document.createElement('div');
+                    circleEl.className = 'node-circle';
+                    nodeEl.appendChild(circleEl);
+                    
+                    nodesContainer.appendChild(nodeEl);
+                }
+                
+                nodeEl.className = `node ${node.level === 0 ? 'center' : 'level-' + node.level} animating`;
+                
+                // Update circle class based on children
+                const circleEl = nodeEl.querySelector('.node-circle');
+                if (circleEl) {
+                    if (node.children && node.children.length > 0) {
+                        circleEl.classList.add('has-children');
+                    } else {
+                        circleEl.classList.remove('has-children');
+                    }
+                }
+                
+                const updatePosition = () => {
+                    const x = (node.x + offsetX) * scale;
+                    const y = (node.y + offsetY) * scale;
+                    nodeEl.style.left = `calc(50% + ${x}px)`;
+                    nodeEl.style.top = `calc(50% + ${y}px)`;
+                    nodeEl.style.transform = `translate(-50%, -50%) scale(1)`;
+                    nodeEl.style.opacity = '1';
+                };
+                
+                // Use requestAnimationFrame for smooth transitions
+                if (isNew) {
+                    setTimeout(() => updatePosition(), 10);
+                } else {
+                    updatePosition();
+                }
+                
+                // Remove click handler from node itself
+                nodeEl.onclick = null;
+                nodeEl.style.cursor = 'default';
+                
+                // If node has a link, make it clickable
+                if (node.link) {
+                    nodeEl.style.cursor = 'pointer';
+                    nodeEl.onclick = (e) => {
+                        e.stopPropagation();
+                        // Check if it's a URL or relative path
+                        if (node.link.startsWith('http://') || node.link.startsWith('https://') || node.link.startsWith('www.')) {
+                            let url = node.link;
+                            if (node.link.startsWith('www.')) {
+                                url = 'https://' + node.link;
+                            }
+                            window.open(url, '_blank');
+                        } else {
+                            // Relative file path
+                            window.open(node.link, '_blank');
+                        }
+                    };
+                }
+                
+                // Add click handler to circle if node has children
+                const nodeCircle = nodeEl.querySelector('.node-circle');
+                if (nodeCircle && node.children && node.children.length > 0) {
+                    nodeCircle.style.cursor = 'pointer';
+                    nodeCircle.onclick = (e) => {
+                        e.stopPropagation();
+                        node.expanded = !node.expanded;
+                        render();
+                    };
+                    
+                    if (node.expanded) {
+                        nodeEl.classList.add('expanded');
+                    }
+                } else if (nodeCircle) {
+                    nodeCircle.style.cursor = 'default';
+                    nodeCircle.onclick = null;
+                }
+            });
+        }
+
+        // Controls
+        function resetView() {
+            scale = 1;
+            offsetX = -200; // Keep root node on the left
+            offsetY = 0;
+            render();
+        }
+
+        function expandAll() {
+            function expandNode(node) {
+                node.expanded = true;
+                if (node.children) node.children.forEach(expandNode);
+            }
+            expandNode(data);
+            render();
+        }
+
+        function collapseAll() {
+            function collapseNode(node) {
+                if (node.level > 0) node.expanded = false;
+                if (node.children) node.children.forEach(collapseNode);
+            }
+            collapseNode(data);
+            render();
+        }
+
+        // Pan functionality
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX - offsetX * scale;
+            startY = e.clientY - offsetY * scale;
+            container.classList.add('grabbing');
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            offsetX = (e.clientX - startX) / scale;
+            offsetY = (e.clientY - startY) / scale;
+            render();
+        });
+
+        container.addEventListener('mouseup', () => {
+            isDragging = false;
+            container.classList.remove('grabbing');
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isDragging = false;
+            container.classList.remove('grabbing');
+        });
+
+        // Zoom functionality
+        container.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            const newScale = scale * delta;
+            
+            if (newScale > 0.3 && newScale < 3) {
+                scale = newScale;
+                render();
+            }
+        });
+
+        // Resize handler
+        window.addEventListener('resize', render);
+
+        // Initial render
+        data.expanded = true;
+        offsetX = -200; // Position root node visible on the left
+        render();
+    </script>
+</body>
+</html>
