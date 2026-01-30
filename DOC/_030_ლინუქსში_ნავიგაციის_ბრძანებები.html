@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ნავიგაციის ბრძანებების პრაქტიკული სავარჯიშოები</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            padding: 20px;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #f5f5f5;
+            color: #2c3e50;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        .content {
+            padding: 0;
+        }
+
+        .exercise {
+            background: #f9f9f9;
+            border-left: 4px solid #3498db;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .exercise h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+        }
+
+        .exercise-number {
+            background: #3498db;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 1.1em;
+        }
+
+        .command {
+            background: #0a0a0a;
+            color: #4ec9b0;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+            border: 1px solid #3a3a3a;
+        }
+
+        .example {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .example-text {
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        .output {
+            background: #0a0a0a;
+            color: #dcdcdc;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+            border: 1px solid #3a3a3a;
+            font-size: 0.9em;
+            white-space: pre;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.4em;
+            }
+            
+            .content {
+                padding: 0;
+            }
+            
+            .exercise {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ნავიგაციის ბრძანებების პრაქტიკული სავარჯიშოები</h1>
+            <p>Ubuntu 18.04 | BASH Shell</p>
+        </div>
+        
+        <div class="content">
+            <!-- სავარჯიშო 1 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">1</span>სად ვიმყოფები</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        გიორგიმ გახსნა ტერმინალი და არ იცოდა რომელ საქაღალდეში იყო. დაწერა:
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/giorgi</div>
+                        ტერმინალმა უჩვენა, რომ ის თავის home დირექტორიაში იმყოფებოდა.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 2 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">2</span>რა ფაილები და საქაღალდეები არის</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ნინომ გახსნა ტერმინალი და გადაწყვიტა ენახა რა ფაილები და საქაღალდეები ჰქონდა. დაწერა:
+                        <div class="command">$ ls</div>
+                        <div class="output">Desktop  Documents  Downloads  Music  Pictures  Videos</div>
+                        ტერმინალმა აჩვენა ყველა საქაღალდე, რაც მის home დირექტორიაში იყო.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 3 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">3</span>დეტალური ინფორმაცია ფაილებზე</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        დავითმა გადაწყვიტა დაენახა არა მხოლოდ ფაილების სახელები, არამედ მათი ზომა, თარიღი და უფლებები. დაწერა:
+                        <div class="command">$ ls -l</div>
+                        <div class="output">total 32
+drwxr-xr-x 2 daviti daviti 4096 იან 20 09:30 Desktop
+drwxr-xr-x 3 daviti daviti 4096 იან 28 14:15 Documents
+drwxr-xr-x 2 daviti daviti 4096 იან 15 10:45 Downloads
+drwxr-xr-x 2 daviti daviti 4096 იან 10 16:20 Music
+drwxr-xr-x 4 daviti daviti 4096 იან 25 11:30 Pictures
+drwxr-xr-x 2 daviti daviti 4096 იან 12 13:50 Videos</div>
+                        ახლა ის ხედავს თითოეული საქაღალდის უფლებებს, მფლობელს, ზომას ბაიტებში და შექმნის თარიღს.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 4 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">4</span>ფარული ფაილების ნახვა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        მარიამმა იცოდა, რომ ლინუქსში არსებობს ფარული ფაილები, რომლებიც წერტილით იწყებიან. გადაწყვიტა ყველა ფაილის ჩვენება, ფარულების ჩათვლით:
+                        <div class="command">$ ls -a</div>
+                        <div class="output">.              .bashrc        Documents  Music     Videos
+..             .cache         Downloads  Pictures  .profile
+.bash_history  Desktop        .config    .local</div>
+                        ახლა ის ხედავს როგორც ჩვეულებრივ, ასევე ფარულ ფაილებს (რომლებიც . -ით იწყებიან), მათ შორის .bashrc და .bash_history ფაილებს.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 5 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">5</span>საქაღალდეში შესვლა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        გიორგის მოუნდა Documents საქაღალდეში შესვლა. ჯერ შეამოწმა სად იყო:
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/giorgi</div>
+                        შემდეგ შევიდა Documents საქაღალდეში:
+                        <div class="command">$ cd Documents</div>
+                        და კიდევ ერთხელ შეამოწმა სად იმყოფება:
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/giorgi/Documents</div>
+                        წარმატებით გადავიდა Documents საქაღალდეში.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 6 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">6</span>უკან დაბრუნება</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ნინო ჩავიდა ღრმად საქაღალდების სტრუქტურაში და იმყოფებოდა /home/nino/Documents/work/projects საქაღალდეში:
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/nino/Documents/work/projects</div>
+                        გადაწყვიტა ერთი დონით უკან დაბრუნება (work საქაღალდეში):
+                        <div class="command">$ cd ..</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/nino/Documents/work</div>
+                        წარმატებით დაბრუნდა ერთი დონით უკან.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 7 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">7</span>home დირექტორიაში დაბრუნება</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        დავითი იმყოფებოდა /var/log საქაღალდეში და სწრაფად უნდა დაბრუნებულიყო თავის home დირექტორიაში:
+                        <div class="command">$ pwd</div>
+                        <div class="output">/var/log</div>
+                        გამოიყენა ~ სიმბოლო, რომელიც home დირექტორიას აღნიშნავს:
+                        <div class="command">$ cd ~</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/daviti</div>
+                        მაშინვე გადავიდა თავის home დირექტორიაში, მიუხედავად იმისა, თუ სად იმყოფებოდა.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 8 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">8</span>წინა საქაღალდეში დაბრუნება</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        მარიამი იმყოფებოდა Documents საქაღალდეში:
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/mariam/Documents</div>
+                        შემდეგ გადავიდა Music საქაღალდეში:
+                        <div class="command">$ cd ~/Music</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/mariam/Music</div>
+                        მაგრამ გაიფიქრა, რომ Documents საქაღალდეში უნდა დაბრუნებულიყო. გამოიყენა cd - ბრძანება:
+                        <div class="command">$ cd -</div>
+                        <div class="output">/home/mariam/Documents</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/mariam/Documents</div>
+                        წარმატებით დაბრუნდა იმ საქაღალდეში, სადაც წინა ბრძანების გაშვებამდე იყო.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 9 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">9</span>საქაღალდის სტრუქტურის ვიზუალიზაცია</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        გიორგის მოუნდა დაენახა მთელი საქაღალდის სტრუქტურა ხის ფორმატში. გამოიყენა tree ბრძანება:
+                        <div class="command">$ tree</div>
+                        <div class="output">.
+├── Desktop
+├── Documents
+│   ├── essay.txt
+│   ├── notes.txt
+│   └── work
+│       ├── project1
+│       │   └── readme.md
+│       └── report.pdf
+├── Downloads
+│   └── file.zip
+├── Music
+│   ├── song1.mp3
+│   └── song2.mp3
+├── Pictures
+│   ├── photo1.jpg
+│   ├── photo2.jpg
+│   └── vacation
+│       ├── beach.jpg
+│       └── mountain.jpg
+└── Videos
+    └── video.mp4
+
+8 directories, 13 files</div>
+                        ახლა გიორგი მკაფიოდ ხედავს მთელ საქაღალდის სტრუქტურას, ფაილების განლაგებას და მათ რაოდენობას.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

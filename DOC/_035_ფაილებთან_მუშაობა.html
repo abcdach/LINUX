@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ფაილებთან მუშაობის პრაქტიკული სავარჯიშოები</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            padding: 20px;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #f5f5f5;
+            color: #2c3e50;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        .content {
+            padding: 0;
+        }
+
+        .exercise {
+            background: #f9f9f9;
+            border-left: 4px solid #3498db;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .exercise h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+        }
+
+        .exercise-number {
+            background: #3498db;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 1.1em;
+        }
+
+        .command {
+            background: #0a0a0a;
+            color: #4ec9b0;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+            border: 1px solid #3a3a3a;
+        }
+
+        .example {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .example-text {
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        .output {
+            background: #0a0a0a;
+            color: #dcdcdc;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+            border: 1px solid #3a3a3a;
+            font-size: 0.9em;
+            white-space: pre;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.4em;
+            }
+            
+            .content {
+                padding: 0;
+            }
+            
+            .exercise {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ფაილებთან მუშაობის პრაქტიკული სავარჯიშოები</h1>
+            <p>Ubuntu 18.04 | BASH Shell</p>
+        </div>
+        
+        <div class="content">
+            <!-- სავარჯიშო 1 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">1</span>ცარიელი ფაილის შექმნა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        გიორგი გადაწყვიტა შექმნას ცარიელი ფაილი სახელად notes.txt. ჯერ მან შექმნა საქაღალდე და შემდეგ შიგ შექმნა ფაილი:
+                        <div class="command">$ mkdir my_documents</div>
+                        <div class="command">$ cd my_documents</div>
+                        <div class="command">$ touch notes.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">notes.txt</div>
+                        ფაილი წარმატებით შეიქმნა. გიორგიმ ასევე გადაწყვიტა ერთდროულად რამდენიმე ფაილის შექმნა:
+                        <div class="command">$ touch file1.txt file2.txt file3.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">file1.txt  file2.txt  file3.txt  notes.txt</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 2 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">2</span>დირექტორიის შექმნა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ნინომ გადაწყვიტა ორგანიზებული ჰქონოდა თავისი პროექტები. მან შექმნა რამდენიმე საქაღალდე:
+                        <div class="command">$ mkdir projects</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">projects</div>
+                        შემდეგ მან შექმნა რამდენიმე საქაღალდე ერთდროულად:
+                        <div class="command">$ mkdir photos videos documents</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">documents  photos  projects  videos</div>
+                        ბოლოს კი ნინომ გადაწყვიტა შექმნას საქაღალდეების იერარქია:
+                        <div class="command">$ mkdir -p work/2024/reports</div>
+                        <div class="command">$ cd work/2024/reports</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/student/work/2024/reports</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 3 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">3</span>ტექსტური ფაილის შექმნა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        დავითმა გადაწყვიტა შექმნას ფაილი ტექსტით. პირველ რიგში მან შექმნა მარტივი ფაილი:
+                        <div class="command">$ echo "გამარჯობა მსოფლიო" > greeting.txt</div>
+                        <div class="command">$ cat greeting.txt</div>
+                        <div class="output">გამარჯობა მსოფლიო</div>
+                        შემდეგ დავითმა დაამატა ახალი ხაზი არსებულ ფაილში:
+                        <div class="command">$ echo "ეს არის მეორე ხაზი" >> greeting.txt</div>
+                        <div class="command">$ cat greeting.txt</div>
+                        <div class="output">გამარჯობა მსოფლიო
+ეს არის მეორე ხაზი</div>
+                        ბოლოს კი მან შექმნა ახალი ფაილი რომელმაც შეცვალა ძველი შინაარსი:
+                        <div class="command">$ echo "ახალი შინაარსი" > greeting.txt</div>
+                        <div class="command">$ cat greeting.txt</div>
+                        <div class="output">ახალი შინაარსი</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 4 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">4</span>ფაილების კოპირება</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        მარიამმა შექმნა ფაილი და გადაწყვიტა მისი კოპირება. ჯერ მან შექმნა ორიგინალი ფაილი:
+                        <div class="command">$ echo "ორიგინალი დოკუმენტი" > original.txt</div>
+                        <div class="command">$ cat original.txt</div>
+                        <div class="output">ორიგინალი დოკუმენტი</div>
+                        შემდეგ მან დააკოპირა იმავე დირექტორიაში:
+                        <div class="command">$ cp original.txt backup.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">backup.txt  original.txt</div>
+                        <div class="command">$ cat backup.txt</div>
+                        <div class="output">ორიგინალი დოკუმენტი</div>
+                        ბოლოს მარიამმა შექმნა ახალი საქაღალდე და დააკოპირა ფაილი:
+                        <div class="command">$ mkdir archive</div>
+                        <div class="command">$ cp original.txt archive/</div>
+                        <div class="command">$ ls archive/</div>
+                        <div class="output">original.txt</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 5 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">5</span>დირექტორიების კოპირება</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ლევანმა შექმნა საქაღალდე ფაილებით და გადაწყვიტა მისი სრული კოპირება:
+                        <div class="command">$ mkdir my_project</div>
+                        <div class="command">$ cd my_project</div>
+                        <div class="command">$ touch file1.txt file2.txt file3.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">file1.txt  file2.txt  file3.txt</div>
+                        შემდეგ ლევანი დაბრუნდა უკან და დააკოპირა მთელი საქაღალდე:
+                        <div class="command">$ cd ..</div>
+                        <div class="command">$ cp -r my_project project_backup</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">my_project  project_backup</div>
+                        <div class="command">$ ls project_backup/</div>
+                        <div class="output">file1.txt  file2.txt  file3.txt</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 6 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">6</span>ფაილის გადარქმევა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        თამარმა შექმნა ფაილი მაგრამ არასწორი სახელით:
+                        <div class="command">$ touch old_name.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">old_name.txt</div>
+                        მან გადაწყვიტა სახელის შეცვლა:
+                        <div class="command">$ mv old_name.txt new_name.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">new_name.txt</div>
+                        ახლა ძველი ფაილი აღარ არსებობს და მის ადგილას არის ახალი სახელით ფაილი.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 7 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">7</span>ფაილის გადატანა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ანამ შექმნა ფაილი არასწორ დირექტორიაში:
+                        <div class="command">$ touch report.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">report.txt</div>
+                        მან შექმნა სწორი საქაღალდე და გადაიტანა ფაილი:
+                        <div class="command">$ mkdir reports</div>
+                        <div class="command">$ mv report.txt reports/</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">reports</div>
+                        <div class="command">$ ls reports/</div>
+                        <div class="output">report.txt</div>
+                        ფაილი წარმატებით გადავიდა ახალ საქაღალდეში.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 8 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">8</span>ფაილების წაშლა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        გიორგიმ შექმნა რამდენიმე ზედმეტი ფაილი:
+                        <div class="command">$ touch test1.txt test2.txt test3.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">test1.txt  test2.txt  test3.txt</div>
+                        მან გადაწყვიტა ერთი ფაილის წაშლა:
+                        <div class="command">$ rm test1.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">test2.txt  test3.txt</div>
+                        შემდეგ წაშალა დარჩენილი ფაილები:
+                        <div class="command">$ rm test2.txt test3.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 9 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">9</span>დირექტორიების წაშლა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ნინომ შექმნა ცარიელი საქაღალდე:
+                        <div class="command">$ mkdir empty_folder</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">empty_folder</div>
+                        ცარიელი საქაღალდე შეიძლება წაიშალოს rmdir ბრძანებით:
+                        <div class="command">$ rmdir empty_folder</div>
+                        <div class="command">$ ls</div>
+                        <div class="output"></div>
+                        შემდეგ ნინომ შექმნა საქაღალდე ფაილებით:
+                        <div class="command">$ mkdir my_folder</div>
+                        <div class="command">$ touch my_folder/file1.txt my_folder/file2.txt</div>
+                        <div class="command">$ ls my_folder/</div>
+                        <div class="output">file1.txt  file2.txt</div>
+                        არაცარიელი საქაღალდე იშლება rm -r ბრძანებით:
+                        <div class="command">$ rm -r my_folder</div>
+                        <div class="command">$ ls</div>
+                        <div class="output"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 10 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">10</span>ფაილის შინაარსის ნახვა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        დავითმა შექმნა ფაილი ტექსტით:
+                        <div class="command">$ echo "პირველი ხაზი" > myfile.txt</div>
+                        <div class="command">$ echo "მეორე ხაზი" >> myfile.txt</div>
+                        <div class="command">$ echo "მესამე ხაზი" >> myfile.txt</div>
+                        მან გადაწყვიტა ნახოს ფაილის შინაარსი:
+                        <div class="command">$ cat myfile.txt</div>
+                        <div class="output">პირველი ხაზი
+მეორე ხაზი
+მესამე ხაზი</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 11 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">11</span>დიდი ფაილების ნახვა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        მარიამმა შექმნა დიდი ფაილი მრავალი ხაზით:
+                        <div class="command">$ echo "ხაზი 1" > bigfile.txt</div>
+                        <div class="command">$ echo "ხაზი 2" >> bigfile.txt</div>
+                        <div class="command">$ echo "ხაზი 3" >> bigfile.txt</div>
+                        <div class="command">$ echo "ხაზი 4" >> bigfile.txt</div>
+                        <div class="command">$ echo "ხაზი 5" >> bigfile.txt</div>
+                        დიდი ფაილის სანახავად გამოიყენება less:
+                        <div class="command">$ less bigfile.txt</div>
+                        <div class="output">ხაზი 1
+ხაზი 2
+ხაზი 3
+ხაზი 4
+ხაზი 5
+(გამოსასვლელად დააჭირეთ q)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 12 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">12</span>ფაილის დასაწყისი და დასასრული</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ლევანმა შექმნა ფაილი მრავალი ხაზით:
+                        <div class="command">$ echo "ხაზი 1" > numbers.txt</div>
+                        <div class="command">$ echo "ხაზი 2" >> numbers.txt</div>
+                        <div class="command">$ echo "ხაზი 3" >> numbers.txt</div>
+                        <div class="command">$ echo "ხაზი 4" >> numbers.txt</div>
+                        <div class="command">$ echo "ხაზი 5" >> numbers.txt</div>
+                        პირველი სამი ხაზის სანახავად:
+                        <div class="command">$ head -n 3 numbers.txt</div>
+                        <div class="output">ხაზი 1
+ხაზი 2
+ხაზი 3</div>
+                        ბოლო ორი ხაზის სანახავად:
+                        <div class="command">$ tail -n 2 numbers.txt</div>
+                        <div class="output">ხაზი 4
+ხაზი 5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 13 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">13</span>მიმდინარე დირექტორიის ნახვა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        თამარმა გადაწყვიტა დაენახა სად იმყოფება:
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/student</div>
+                        შემდეგ მან შექმნა ახალი საქაღალდე და შევიდა მასში:
+                        <div class="command">$ mkdir projects</div>
+                        <div class="command">$ cd projects</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/student/projects</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 14 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">14</span>დირექტორიის შიგთავსი</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ანამ შექმნა საქაღალდე და შიგ რამდენიმე ფაილი:
+                        <div class="command">$ mkdir test_folder</div>
+                        <div class="command">$ touch test_folder/file1.txt test_folder/file2.txt</div>
+                        <div class="command">$ mkdir test_folder/subfolder</div>
+                        მარტივი სია:
+                        <div class="command">$ ls test_folder</div>
+                        <div class="output">file1.txt  file2.txt  subfolder</div>
+                        დეტალური ინფორმაცია:
+                        <div class="command">$ ls -l test_folder</div>
+                        <div class="output">total 4
+-rw-r--r-- 1 student student    0 Jan 29 10:00 file1.txt
+-rw-r--r-- 1 student student    0 Jan 29 10:00 file2.txt
+drwxr-xr-x 2 student student 4096 Jan 29 10:00 subfolder</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 15 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">15</span>დირექტორიის შეცვლა</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        გიორგიმ შექმნა რამდენიმე საქაღალდე:
+                        <div class="command">$ mkdir documents</div>
+                        <div class="command">$ mkdir documents/work</div>
+                        <div class="command">$ mkdir documents/personal</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/student</div>
+                        შესვლა documents საქაღალდეში:
+                        <div class="command">$ cd documents</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/student/documents</div>
+                        შესვლა work ქვესაქაღალდეში:
+                        <div class="command">$ cd work</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/student/documents/work</div>
+                        ერთი დონით ზემოთ ასვლა:
+                        <div class="command">$ cd ..</div>
+                        <div class="command">$ pwd</div>
+                        <div class="output">/home/student/documents</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 16 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">16</span>ჯოკერი * - ყველა ფაილი</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ნინომ შექმნა სხვადასხვა ტიპის ფაილები:
+                        <div class="command">$ touch report1.txt report2.txt report3.txt</div>
+                        <div class="command">$ touch photo1.jpg photo2.jpg</div>
+                        <div class="command">$ touch document.pdf</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">document.pdf  photo1.jpg  photo2.jpg  report1.txt  report2.txt  report3.txt</div>
+                        მხოლოდ txt ფაილების ნახვა:
+                        <div class="command">$ ls *.txt</div>
+                        <div class="output">report1.txt  report2.txt  report3.txt</div>
+                        მხოლოდ jpg ფაილების ნახვა:
+                        <div class="command">$ ls *.jpg</div>
+                        <div class="output">photo1.jpg  photo2.jpg</div>
+                        ყველა txt ფაილის წაშლა:
+                        <div class="command">$ rm *.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">document.pdf  photo1.jpg  photo2.jpg</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 17 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">17</span>ჯოკერი ? - ერთი სიმბოლო</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        დავითმა შექმნა ფაილები ნომრებით:
+                        <div class="command">$ touch file1.txt file2.txt file3.txt</div>
+                        <div class="command">$ touch file10.txt file20.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">file1.txt  file10.txt  file2.txt  file20.txt  file3.txt</div>
+                        ჯოკერი ? ემთხვევა მხოლოდ ერთ სიმბოლოს:
+                        <div class="command">$ ls file?.txt</div>
+                        <div class="output">file1.txt  file2.txt  file3.txt</div>
+                        ეს არ აჩვენებს file10.txt და file20.txt-ს, რადგან მათში ერთზე მეტი სიმბოლოა ციფრის ადგილას.
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 18 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">18</span>ჯოკერი [] - დიაპაზონი</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        მარიამმა შექმნა ფაილები ციფრებით:
+                        <div class="command">$ touch test1.txt test2.txt test3.txt test4.txt test5.txt</div>
+                        <div class="command">$ ls</div>
+                        <div class="output">test1.txt  test2.txt  test3.txt  test4.txt  test5.txt</div>
+                        მხოლოდ 1-დან 3-მდე ნომრების ნახვა:
+                        <div class="command">$ ls test[1-3].txt</div>
+                        <div class="output">test1.txt  test2.txt  test3.txt</div>
+                        კონკრეტული ნომრების ნახვა:
+                        <div class="command">$ ls test[135].txt</div>
+                        <div class="output">test1.txt  test3.txt  test5.txt</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- სავარჯიშო 19 -->
+            <div class="exercise">
+                <h2><span class="exercise-number">19</span>ფაილების უფლებები</h2>
+                
+                <div class="example">
+                    <div class="example-text">
+                        ლევანმა შექმნა სკრიპტის ფაილი:
+                        <div class="command">$ touch my_script.sh</div>
+                        <div class="command">$ ls -l my_script.sh</div>
+                        <div class="output">-rw-r--r-- 1 student student 0 Jan 29 10:00 my_script.sh</div>
+                        ფაილს არ აქვს გაშვების უფლება. ლევანმა დაამატა შესრულების უფლება:
+                        <div class="command">$ chmod +x my_script.sh</div>
+                        <div class="command">$ ls -l my_script.sh</div>
+                        <div class="output">-rwxr-xr-x 1 student student 0 Jan 29 10:00 my_script.sh</div>
+                        ახლა ფაილი შესასრულებელია და აქვს x ასო უფლებებში.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
